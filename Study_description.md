@@ -501,10 +501,6 @@ CLMMs indicated activity increased offshore and in deeper habitats, with diel pe
 
 > All images should be placed in your repo at `figures/`. If your filenames differ, update the links below.
 
-**Graphical Abstract**  
-*Graphic depiction of the expected turning angle (radians) and step length (m) distributions for a three-state HMM. Adapted from Rabaneda‑Bueno (unpublished).*  
-![Graphical Abstract](figures/graphical_abstract.png)
-
 **Figure 1. Receiver array and bathymetry.**  
 *Placement of telemetry receivers in Římov Reservoir, Czech Republic. Blue shading shows bathymetry. Adapted from Říha et al. 2025a.*  
 ![Figure 1](figures/Figure 1.png)
