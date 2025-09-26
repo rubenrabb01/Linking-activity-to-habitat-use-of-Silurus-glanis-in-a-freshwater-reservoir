@@ -680,4 +680,32 @@ Catfish exhibited strong diel rhythms with elevated nocturnal activity and spati
 
 ---
 
-*Citations:* Copp et al. (2009); Johnson et al. (2008); Langrock et al. (2012); Michelot et al. (2016, 2025); McClintock & Michelot (2022); Říha et al. (2015, 2021, 2022, 2025); Šeda & Devetter (2000); Vejřík et al. (2017).
+## References
+
+- Albeke, S. E. (2025). *rKIN: (Kernel) Isotope Niche Estimation* (Version 1.0.4) [Computer software]. [https://cran.r-project.org/web/packages/rKIN](https://cran.r-project.org/web/packages/rKIN/index.html)
+
+- Bacheler, N. M., Michelot, T., Cheshire, R. T., & Shertzer, K. W. (2019). Fine-scale movement patterns and behavioral states of gray triggerfish *Balistes capriscus* determined from acoustic telemetry and hidden Markov models. *Fisheries Research, 215*, 76–89. [https://doi.org/10.1016/j.fishres.2019.02.014](https://doi.org/10.1016/j.fishres.2019.02.014)
+
+- Brevé, N. W. P., Verspui, R., De Laak, G. A. J., Bendall, B., Breukelaar, A. W., & Spierts, I. L. Y. (2014). Explicit site fidelity of European catfish (*Silurus glanis*, L., 1758) to man-made habitat in the River Meuse, Netherlands. *Journal of Applied Ichthyology, 30*(3), 472–478. [https://doi.org/10.1111/jai.12410](https://doi.org/10.1111/jai.12410)
+
+- Calenge, C. (2006). The package “adehabitat” for the R software: A tool for the analysis of space and habitat use by animals. *Ecological Modelling, 197*(3), 516–519. [https://doi.org/10.1016/j.ecolmodel.2006.03.017](https://doi.org/10.1016/j.ecolmodel.2006.03.017)
+
+- Carol, J., Zamora, L., & García-Berthou, E. (2007). Preliminary telemetry data on the movement patterns and habitat use of European catfish (*Silurus glanis*) in a reservoir of the River Ebro, Spain. *Ecology of Freshwater Fish, 16*(3), 450–456. [https://doi.org/10.1111/j.1600-0633.2007.00225.x](https://doi.org/10.1111/j.1600-0633.2007.00225.x)
+
+- Christensen, R. H. B. (2024). *ordinal: Regression Models for Ordinal Data* (Version 2023.12-4.1) [Computer software]. [https://cran.r-project.org/web/packages/ordinal](https://cran.r-project.org/web/packages/ordinal/index.html)
+
+- Cooke, S. J., Bergman, J. N., Twardek, W. M., Piczak, M. L., Casselberry, G. A., Lutek, K., Dahlmo, L. S., Birnie-Gauvin, K., Griffin, L. P., Brownscombe, J. W., Raby, G. D., Standen, E. M., Horodysky, A. Z., Johnsen, S., Danylchuk, A. J., Furey, N. B., Gallagher, A. J., Lédée, E. J. I., Midwood, J. D., … Lennox, R. J. (2022). The movement ecology of fishes. *Journal of Fish Biology, 101*(4), 756–779. [https://doi.org/10.1111/jfb.15153](https://doi.org/10.1111/jfb.15153)
+
+- Copp, G. H., Britton, J. R., Cucherousset, J., García-Berthou, E., Kirk, R., Peeler, E., & Stakėnas, S. (2009). Voracious invader or benign feline? A review of the environmental biology of European catfish *Silurus glanis* in its native and introduced ranges. *Fish and Fisheries, 10*(3), 252–282. [https://doi.org/10.1111/j.1467-2979.2008.00321.x](https://doi.org/10.1111/j.1467-2979.2008.00321.x)
+
+- Langrock, R., King, R., Matthiopoulos, J., Thomas, L., Fortin, D., & Morales, J. M. (2012). Flexible and practical modeling of animal telemetry data: Hidden Markov models and extensions. *Ecology, 93*(11), 2336–2342. [https://doi.org/10.1890/11-2241.1](https://doi.org/10.1890/11-2241.1)
+
+- McClintock, B., & Michelot, T. (2022). *momentuHMM: Maximum Likelihood Analysis of Animal Movement Behavior Using Multivariate Hidden Markov Models* (Version 1.5.5) [Computer software]. [https://cran.r-project.org/web/packages/momentuHMM](https://cran.r-project.org/web/packages/momentuHMM/index.html)
+
+- Michelot, T., Langrock, R., Patterson, T., McClintock, B., & Rexstad, E. (2016). *moveHMM: Animal Movement Modelling using Hidden Markov Models* (Version 1.10) [Computer software]. [https://cran.r-project.org/web/packages/moveHMM](https://cran.r-project.org/web/packages/moveHMM/index.html)
+
+- Michelot, T., Langrock, R., & Patterson, T. (2025). *moveHMM: an R package for the analysis of animal movement data.* [https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-guide.pdf](https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-guide.pdf)
+
+- Říha, M., & Prchalová, M. (2022). Models of Animal Distributions in Inland Waters. In *Reference Module in Earth Systems and Environmental Sciences.* [https://doi.org/10.1016/B978-0-12-819166-8.00065-7](https://doi.org/10.1016/B978-0-12-819166-8.00065-7)
+
+- Říha, M., Rabaneda-Bueno, R., Jarić, I., Souza, A. T., Vejřík, L., Draštík, V., Blabolil, P., Holubová, M., Jůza, T., Gjelland, K. Ø., Rychtecký, P., Sajdlová, Z., Kočvara, L., Tušer, M., Prchalová, M., Seďa, J., & Peterka, J. (2022). Seasonal habitat use of three predatory fishes in a freshwater ecosystem. *Hydrobiologia, 849*(15), 3351–3371. [https://doi.org/10.1007/s10750-022-04938-1](https://doi.org/10.1007/s10750-022-04938-1)
