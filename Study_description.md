@@ -1,5 +1,5 @@
 
-# Catfish Movement in Římov Reservoir
+# Catfish Movement in Římov Reservoir: Full Workflow, Methods, Results, and Code
 
 > **Graphical Abstract (top)**  
 > *Graphic depiction of the expected turning angle (radians) and step length (m) distributions for a three‑state Hidden Markov Model.*  
