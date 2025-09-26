@@ -242,50 +242,48 @@ write_csv(HMM_wels_clean, "./data/HMM_wels_clean.csv")
 
 We fit a 3‑state HMM using gamma step lengths and von Mises turning angles. Covariates: cyclic time (cos, sin) and standardized epilimnion temperature. We compare models with no covariates, temperature only, time only, additive (time + temp), and interaction (time * temp) using AIC/log‑likelihood. We run multiple initializations to ensure convergence (global optimum).
 
-#### Model components and equations
+### Model components and equations
 
-- **Emission distributions** (per state \(s\)):  
-  Step length \(L_t \mid S_t=s \sim \text{Gamma}(k_s,\ \theta_s)\),  
-  Turning angle \(\Theta_t \mid S_t=s \sim \text{von Mises}(\mu_s,\ \kappa_s)\).
+**Emission distributions (per state \(s\)):**
 
-- **Time-of-day cyclic covariates** (seconds since midnight \(t\)):  
-  \[
-  \mathrm{cos\_time}_t = \cos\!\left(\frac{2\pi\, t}{86400}\right),\qquad
-  \mathrm{sin\_time}_t = \sin\!\left(\frac{2\pi\, t}{86400}\right).
-  \]
+\[
+L_t \mid S_t=s \sim \text{Gamma}(k_s,\ \theta_s),
+\]
+\[
+\Theta_t \mid S_t=s \sim \text{von Mises}(\mu_s,\ \kappa_s).
+\]
 
-- **Temperature standardization** (for numerical stability):  
-  \[
-  \texttt{stand\_mean\_temp} = \frac{\texttt{temp\_mean} - \mu}{\sigma},
-  \]
-  where \(\mu\) and \(\sigma\) are the mean and SD of the merged epilimnion temperatures.
+**Time-of-day cyclic covariates** (seconds since midnight \(t\)):
 
-- **State process with covariates** (multinomial logit for transition probabilities \(p_{ij}(t)\)):  
-  \[
-  \log\frac{p_{ij}(t)}{p_{i3}(t)} = \beta_{0,ij} + \beta_{1,ij}\,\mathrm{cos\_time}_t + \beta_{2,ij}\,\mathrm{sin\_time}_t
-  + \beta_{3,ij}\,\texttt{stand\_mean\_temp}_t
-  + \beta_{4,ij}\,\mathrm{cos\_time}_t\!\cdot\!\texttt{stand\_mean\_temp}_t
-  + \beta_{5,ij}\,\mathrm{sin\_time}_t\!\cdot\!\texttt{stand\_mean\_temp}_t,
-  \]
-  for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
+\[
+\mathrm{cos\_time}_t = \cos\!\left(\frac{2\pi t}{86400}\right), \qquad
+\mathrm{sin\_time}_t = \sin\!\left(\frac{2\pi t}{86400}\right).
+\]
 
-- **Candidate sets compared** (moveHMM):  
-  1) no covariates; 2) temperature only; 3) time only; 4) additive (time + temp); 5) interaction (time * temp).  
-  Selection via AIC/log‑likelihood; best model was the interaction.
+**Temperature standardization** (for numerical stability):
 
-**`scripts/hmm_function.R`** (randomized starting values; 3‑state)
-```r
-# Create randomized starting values for 3-state HMM (niter tries)
-niter <- 5
-allPar0_3s <- lapply(as.list(1:niter), function(x) {
-  stepMean0 <- runif(3, min=c(3,25,55), max=c(50,75,100))
-  stepSD0   <- runif(3, min=c(3,25,55), max=c(50,75,100))
-  angleMean0 <- c(0, pi, pi/2)
-  angleCon0  <- runif(3, min=c(1,2,4), max=c(3,5,6))
-  list(step = c(stepMean0, stepSD0),
-       angle = c(angleMean0, angleCon0))
-})
-```
+\[
+\texttt{stand\_mean\_temp} = \frac{\texttt{temp\_mean} - \mu}{\sigma},
+\]
+
+where \(\mu\) and \(\sigma\) are the mean and SD of the merged epilimnion temperatures.
+
+**State process with covariates**  
+(multinomial logit for transition probabilities \(p_{ij}(t)\)):
+
+\[
+\log\frac{p_{ij}(t)}{p_{i3}(t)} =
+\beta_{0,ij}
++ \beta_{1,ij}\,\mathrm{cos\_time}_t
++ \beta_{2,ij}\,\mathrm{sin\_time}_t
++ \beta_{3,ij}\,\texttt{stand\_mean\_temp}_t
++ \beta_{4,ij}\,\mathrm{cos\_time}_t \cdot \texttt{stand\_mean\_temp}_t
++ \beta_{5,ij}\,\mathrm{sin\_time}_t \cdot \texttt{stand\_mean\_temp}_t,
+\]
+
+for \(j=1,2\) (baseline \(j=3\)).  
+Reduced models drop terms accordingly.
+
 
 **`scripts/HMM_wels_FINAL_copy.R`** (model fitting, selection, decoding, and probability prediction)
 ```r
