@@ -1,0 +1,2 @@
+# Linking-activity-to-habitat-use-of-Silurus-glanis-in-a-freshwater-reservoir
+Analysing the movements of catfish (Silurus glanis) in the Římov reservoir using acoustic telemetry and hidden Markov models (HMMs). The project explores diel activity states, habitat use (littoral vs. pelagic), and environmental drivers of predator behavior to improve understanding of catfish ecology and management.
