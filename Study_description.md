@@ -28,11 +28,12 @@ where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion t
 **State process with covariates (multinomial logit):**
 
 $$
-\log\frac{p_{ij}(t)}{p_{i3}(t)} =
-\beta_{0,ij} + \beta_{1,ij}\cos\_time_t
-+ \beta_{2,ij}\sin\_time_t
-+ \beta_{3,ij}stand\_mean\_temp_t
-+ \beta_{4,ij}\cos\_time_t \cdot stand\_mean\_temp_t
-+ \beta_{5,ij}\sin\_time_t \cdot stand\_mean\_temp_t
+\begin{aligned}
+\log\frac{p_{ij}(t)}{p_{i3}(t)} = {} & \beta_{0,ij} \\
+ &+ \beta_{1,ij}\cos\_time_t \\
+ &+ \beta_{2,ij}\sin\_time_t \\
+ &+ \beta_{3,ij}stand\_mean\_temp_t \\
+ &+ \beta_{4,ij}\cos\_time_t \cdot stand\_mean\_temp_t \\
+ &+ \beta_{5,ij}\sin\_time_t \cdot stand\_mean\_temp_t
+\end{aligned}
 $$
-
