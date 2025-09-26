@@ -328,10 +328,12 @@ $$
 $$
 
 - **Time-of-day cyclic covariates** (seconds since midnight \(t\)):  
-  \[
-  \mathrm{cos\_time}_t = \cos\!\left(\frac{2\pi\, t}{86400}\right),\qquad
-  \mathrm{sin\_time}_t = \sin\!\left(\frac{2\pi\, t}{86400}\right).
-  \]
+
+$$
+stand\_mean\_temp = \frac{temp\_mean - \mu}{\sigma}
+$$
+
+where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion temperatures.
 
 - **Temperature standardization** (for numerical stability):  
   \[
