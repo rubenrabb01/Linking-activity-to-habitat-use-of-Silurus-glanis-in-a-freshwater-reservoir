@@ -317,7 +317,8 @@ We fit a 3‑state HMM using gamma step lengths and von Mises turning angles. Co
 
 #### Model components and equations
 
-- **Emission distributions** (per state \(s\)):  
+- **Emission distributions (per state \(s\)):**
+
 $$
 L_t \mid S_t=s \sim \mathrm{Gamma}(k_s,\ \theta_s)
 $$
