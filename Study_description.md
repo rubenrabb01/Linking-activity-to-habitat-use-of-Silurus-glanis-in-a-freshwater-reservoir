@@ -107,16 +107,16 @@ Fifteen *S. glanis* were captured by long‑lining (per Vejřík et al., 2017) a
 │  ├─ CLMM_final_updated.R
 │  └─ botDepth_depth_rKIN_visual_updated.R
 └─ figures/
-   ├─ Figure 1.png
-   ├─ Figure 5.png
-   ├─ Figure 7.png
-   ├─ Figure 9.png
-   ├─ Figure 11.png
-   ├─ Figure 12.png
-   ├─ Figure 13.png
+   ├─ Figure_1.png
+   ├─ Figure_5.png
+   ├─ Figure_7.png
+   ├─ Figure_9.png
+   ├─ Figure_11.png
+   ├─ Figure_12.png
+   ├─ Figure_13.png
    ├─ Table 1.png
-   ├─ Figure A1.1.png
-   ├─ Figure A1.2.png
+   ├─ Figure_A1.1.png
+   ├─ Figure_A1.2.png
    └─ graphical_abstract.png
 ```
 
@@ -463,7 +463,7 @@ Areas differed significantly by state (p < 0.001), increasing with activity 
 
 ### Time Allocation & Spatial Distribution
 
-Time in state varied among individuals (see Figure 9). Most fish (9/13) spent ~30–48% inactive; fish with fewer observations (< ~3000) showed lower inactivity percentages but still had concentrated inactivity areas. Inactivity locations varied among individuals, often with multiple hotspots per fish.
+Time in state varied among individuals (see Figure_9). Most fish (9/13) spent ~30–48% inactive; fish with fewer observations (< ~3000) showed lower inactivity percentages but still had concentrated inactivity areas. Inactivity locations varied among individuals, often with multiple hotspots per fish.
 
 ### Influence of Temperature & Time of Day
 
@@ -491,40 +491,40 @@ CLMMs indicated activity increased offshore and in deeper habitats, with diel pe
 
 > All images should be placed in your repo at `figures/`. If your filenames differ, update the links below.
 
-**Figure 1. Receiver array and bathymetry.**  
+**Figure_1. Receiver array and bathymetry.**  
 *Placement of telemetry receivers in Římov Reservoir, Czech Republic. Blue shading shows bathymetry. Adapted from Říha et al. 2025a.*  
-![Figure 1](figures/Figure 1.png)
+![Figure_1](figures/Figure_1.png)
 
-**Figure 5. State-dependent movement distributions.**  
+**Figure_5. State-dependent movement distributions.**  
 *Final HMM model: (a) step length and (b) turning angle distributions by state (Gamma and von Mises fits overlaid).*  
-![Figure 5](figures/Figure 5.png)
+![Figure_5](figures/Figure_5.png)
 
-**Figure 7. Total utilized horizontal area by state (N = 13).**  
+**Figure_7. Total utilized horizontal area by state (N = 13).**  
 *Logged area differs among states; mean increases with activity. An asterisk (*) denotes significance (ANOVA, p < 0.001).*  
-![Figure 7](figures/Figure 7.png)
+![Figure_7](figures/Figure_7.png)
 
-**Figure 9. Individual state allocations.**  
+**Figure_9. Individual state allocations.**  
 *Proportion of detections per state for each fish; total detections per individual shown above bars.*  
-![Figure 9](figures/Figure 9.png)
+![Figure_9](figures/Figure_9.png)
 
-**Figure 11. Diurnal state probabilities under temperature scenarios.**  
+**Figure_11. Diurnal state probabilities under temperature scenarios.**  
 *Probability of being in each state per hour under (a) low (19.7 °C), (b) mean (21 °C), and (c) high (22.7 °C) epilimnion temperatures. Dark grey: civil twilight; light grey: sunrise/sunset windows (UTC; July–August 2017; Č. Budějovice).*  
-![Figure 11](figures/Figure 11.png)
+![Figure_11](figures/Figure_11.png)
 
-**Figure 12. Habitat effects on state probabilities by diel period.**  
+**Figure_12. Habitat effects on state probabilities by diel period.**  
 *Change in state probabilities as a function of (a) distance from shore, (b) reservoir bottom depth, (c) distance to bottom, and (d) fish depth. Solid = day; dotted = night.*  
-![Figure 12](figures/Figure 12.png)
+![Figure_12](figures/Figure_12.png)
 
-**Figure 13. 3D state overlap (depth × bottom depth).**  
+**Figure_13. 3D state overlap (depth × bottom depth).**  
 *Spatial overlay of (a,c) core (50%) and (b,d) home range (95%) areas by state for day (top) and night (bottom). Dashed black line = mean thermocline; grey wedge = reservoir littoral edge.*  
-![Figure 13](figures/Figure 13.png)
+![Figure_13](figures/Figure_13.png)
 
 **Appendix Figures**  
-*Figure A1.1.* *Hourly mean epilimnion temperature across study period; red dashed line = global average.*  
-![Figure A1.1](figures/Figure A1.1.png)
+*Figure_A1.1.* *Hourly mean epilimnion temperature across study period; red dashed line = global average.*  
+![Figure_A1.1](figures/Figure_A1.1.png)
 
-*Figure A1.2.* *Diurnal change in mean epilimnion temperature by month. Dark grey = civil twilight; light grey = sunrise/sunset (UTC; July–August).*  
-![Figure A1.2](figures/Figure A1.2.png)
+*Figure_A1.2.* *Diurnal change in mean epilimnion temperature by month. Dark grey = civil twilight; light grey = sunrise/sunset (UTC; July–August).*  
+![Figure_A1.2](figures/Figure_A1.2.png)
 
 [Back to top](#table-of-contents)
 
@@ -666,7 +666,7 @@ Catfish exhibited strong diel rhythms with elevated nocturnal activity and spati
 
 ## Appendix II
 
-**Figure A2.1.** Overall distribution of states across Římov for each catfish after position‑consistency filtering. *(Provide as an additional figure if available; otherwise, this serves as a placeholder caption.)*
+**Figure_A2.1.** Overall distribution of states across Římov for each catfish after position‑consistency filtering. *(Provide as an additional figure if available; otherwise, this serves as a placeholder caption.)*
 
 [Back to top](#table-of-contents)
 
