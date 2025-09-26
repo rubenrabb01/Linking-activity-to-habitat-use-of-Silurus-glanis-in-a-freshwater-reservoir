@@ -3,11 +3,11 @@
 **Emission distributions (per state \(s\)):**
 
 $$
-L_t \mid S_t=s \sim \text{Gamma}(k_s,\ \theta_s)
+L_t \mid S_t=s \sim \mathrm{Gamma}(k_s,\ \theta_s)
 $$
 
 $$
-\Theta_t \mid S_t=s \sim \text{von Mises}(\mu_s,\ \kappa_s)
+\Theta_t \mid S_t=s \sim \mathrm{von\ Mises}(\mu_s,\ \kappa_s)
 $$
 
 **Time-of-day cyclic covariates (seconds since midnight \(t\)):**
@@ -30,11 +30,11 @@ where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion t
 $$
 \log\frac{p_{ij}(t)}{p_{i3}(t)} =
 \beta_{0,ij}
-+ \beta_{1,ij}\,\text{cos\_time}_t
-+ \beta_{2,ij}\,\text{sin\_time}_t
-+ \beta_{3,ij}\,\text{stand\_mean\_temp}_t
-+ \beta_{4,ij}\,\text{cos\_time}_t \cdot \text{stand\_mean\_temp}_t
-+ \beta_{5,ij}\,\text{sin\_time}_t \cdot \text{stand\_mean\_temp}_t
++ \beta_{1,ij}\,\mathrm{cos\_time}_t
++ \beta_{2,ij}\,\mathrm{sin\_time}_t
++ \beta_{3,ij}\,\mathrm{stand\_mean\_temp}_t
++ \beta_{4,ij}\,\mathrm{cos\_time}_t \cdot \mathrm{stand\_mean\_temp}_t
++ \beta_{5,ij}\,\mathrm{sin\_time}_t \cdot \mathrm{stand\_mean\_temp}_t
 $$
 
 for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
