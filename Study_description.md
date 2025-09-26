@@ -79,7 +79,7 @@ Fifteen *S. glanis* were captured by long‑lining (per Vejřík et al., 2017) a
 
 ## Analysis Workflow (End-to-End)
 
-> **Tip:** Each section below includes the exact code used in the analysis. You can copy/paste or run directly as scripts in your project structure.
+> **Tip:** Each section below includes the exact code used in the analysis.
 
 ### 0. Environment Setup
 
