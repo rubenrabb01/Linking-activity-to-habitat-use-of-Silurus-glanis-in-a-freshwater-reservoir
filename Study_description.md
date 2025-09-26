@@ -284,8 +284,8 @@ $$
 
 
 Thus, the following five HMMs were fit using the **moveHMM** package (Michelot et al. 2016) and compared based on AIC and log-likelihood:
-
-1. No covariates  
+ 
+1. `No covariates`  
 2. `stand_mean_temp`  
 3. `tod_trigo`  
 4. `tod_trigo + stand_mean_temp`  
@@ -682,9 +682,11 @@ CLMMs indicated activity increased offshore and in deeper habitats, with diel pe
 
 ---
 
-## Discussion (brief)
+## Discussion
 
-Catfish exhibited strong diel rhythms with elevated nocturnal activity and spatial expansions toward deeper, offshore habitats. Temperature subtly shifted the timing and magnitude of activity, extending nocturnal activity under warmer epilimnion conditions. Habitat associations were consistent across individuals (low ICC), implying similar behavioral rules: inactivity near shallow nearshore habitats by day; increasing activity with distance from shore and bottom depth; and broader 3D overlap at night. These patterns align with foraging in pelagic zones and refuge/rest in littoral areas.
+This study provides the first fine-scale classification of wels catfish (*Silurus glanis*) movements in a lentic system into three functionally distinct states: resting, foraging, and transiting. Catfish were predominantly inactive during the day and active at night, with high activity concentrated in evening and night hours and low activity peaking in transitional periods. Behavioural timing and probabilities were sensitive to small changes in epilimnion temperature, shifting activity earlier under cooler conditions and extending nocturnal movements under warmer conditions. Habitat use also varied with diel period: fish rested in shallow nearshore areas by day but redistributed vertically and horizontally at night, using pelagic habitats and ascending several meters in the water column.
+
+These results highlight the energetic trade-offs underlying catfish behaviour. Resting appears crucial for conserving energy, while foraging and transiting reflect their reliance on non-visual sensory cues to detect prey in pelagic zones. The overlap of state-specific areas indicates transitions between key resting and feeding sites, aligning with their opportunistic predatory strategy. Importantly, the increased probability of high activity under warmer epilimnion conditions suggests that rising temperatures may enhance catfish foraging efficiency, with implications for their invasive potential in warmer regions. Overall, this research establishes a behavioural baseline for catfish, advancing understanding of predator–prey interactions in reservoirs and offering insights for management and invasion ecology.
 
 [Back to top](#table-of-contents)
 
