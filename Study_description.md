@@ -23,7 +23,7 @@ $$
 \text{stand\_mean\_temp} = \frac{\text{temp\_mean} - \mu}{\sigma}
 $$
 
-where \(\mu\) and \(\sigma\) are the mean and SD of epilimnion temperatures.
+where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion temperatures.
 
 **State process with covariates (multinomial logit):**
 
