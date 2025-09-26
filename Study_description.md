@@ -3,7 +3,6 @@
 
 > **Graphical Abstract (top)**  
 > *Graphic depiction of the expected turning angle (radians) and step length (m) distributions for a three‑state Hidden Markov Model.*  
-> *Adapted from Rabaneda‑Bueno (unpublished).*
 
 <p align="center">
   <img src="figures/graphical_abstract.png" alt="Graphical Abstract" width="80%"/>
