@@ -1,5 +1,5 @@
 
-# Catfish Movement in Římov Reservoir: Full Workflow, Methods, Results, and Code
+# Catfish Movement in Římov Reservoir
 
 > **Graphical Abstract (top)**  
 > *Graphic depiction of the expected turning angle (radians) and step length (m) distributions for a three‑state Hidden Markov Model.*  
@@ -84,17 +84,7 @@ Fifteen *S. glanis* were captured by long‑lining (per Vejřík et al., 2017) a
 
 ### 0. Environment Setup
 
-- **Local install of a source package (e.g., `rgdal_1.6-7.tar.gz`) from your project folder**
-
-```r
-# Install from a local tarball located in your project root (or adjust path)
-install.packages("./rgdal_1.6-7.tar.gz", repos = NULL, type = "source")
-
-# Load after install
-library(rgdal)
-```
-
-- **Project structure (suggested)**
+- **Project structure**
 ```
 .
 ├─ data/
@@ -691,3 +681,4 @@ Catfish exhibited strong diel rhythms with elevated nocturnal activity and spati
 ---
 
 *Citations:* Copp et al. (2009); Johnson et al. (2008); Langrock et al. (2012); Michelot et al. (2016, 2025); McClintock & Michelot (2022); Říha et al. (2015, 2021, 2022, 2025); Šeda & Devetter (2000); Vejřík et al. (2017).
+
