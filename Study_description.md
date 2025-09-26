@@ -13,14 +13,14 @@ $$
 **Time-of-day cyclic covariates (seconds since midnight \(t\)):**
 
 $$
-\mathrm{cos\_time}_t = \cos\!\left(\frac{2\pi t}{86400}\right), \quad
-\mathrm{sin\_time}_t = \sin\!\left(\frac{2\pi t}{86400}\right)
+\cos\_time_t = \cos\!\left(\frac{2\pi t}{86400}\right), \quad
+\sin\_time_t = \sin\!\left(\frac{2\pi t}{86400}\right)
 $$
 
 **Temperature standardization (for numerical stability):**
 
 $$
-\text{stand\_mean\_temp} = \frac{\text{temp\_mean} - \mu}{\sigma}
+stand\_mean\_temp = \frac{temp\_mean - \mu}{\sigma}
 $$
 
 where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion temperatures.
@@ -30,11 +30,12 @@ where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion t
 $$
 \log\frac{p_{ij}(t)}{p_{i3}(t)} =
 \beta_{0,ij}
-+ \beta_{1,ij}\,\mathrm{cos\_time}_t
-+ \beta_{2,ij}\,\mathrm{sin\_time}_t
-+ \beta_{3,ij}\,\text{stand\_mean\_temp}_t
-+ \beta_{4,ij}\,\mathrm{cos\_time}_t \cdot \text{stand\_mean\_temp}_t
-+ \beta_{5,ij}\,\mathrm{sin\_time}_t \cdot \text{stand\_mean\_temp}_t
++ \beta_{1,ij}\,\cos\_time_t
++ \beta_{2,ij}\,\sin\_time_t
++ \beta_{3,ij}\,stand\_mean\_temp_t
++ \beta_{4,ij}\,\cos\_time_t \cdot stand\_mean\_temp_t
++ \beta_{5,ij}\,\sin\_time_t \cdot stand\_mean\_temp_t
 $$
 
 for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
+
