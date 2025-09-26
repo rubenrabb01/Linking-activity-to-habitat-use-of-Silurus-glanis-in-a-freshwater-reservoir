@@ -28,13 +28,30 @@ where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion t
 **State process with covariates (multinomial logit):**
 
 $$
-\log \frac{p_{ij}(t)}{p_{i3}(t)} =
+\log\frac{p_{ij}(t)}{p_{i3}(t)} =
 \beta_{0,ij}
-+ \beta_{1,ij}\cos\_time_t
-+ \beta_{2,ij}\sin\_time_t
-+ \beta_{3,ij}stand\_mean\_temp_t
-+ \beta_{4,ij}\cos\_time_t \cdot stand\_mean\_temp_t
-+ \beta_{5,ij}\sin\_time_t \cdot stand\_mean\_temp_t
++ \beta_{1,ij}\,\text{cos\_time}_t
++ \beta_{2,ij}\,\text{sin\_time}_t
++ \beta_{3,ij}\,\text{stand\_mean\_temp}_t
++ \beta_{4,ij}\,\text{cos\_time}_t \cdot \text{stand\_mean\_temp}_t
++ \beta_{5,ij}\,\text{sin\_time}_t \cdot \text{stand\_mean\_temp}_t
 $$
 
-for \(j = 1,2\) (baseline \(j = 3\)). Reduced models drop terms accordingly.
+for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
+
+
+**State process with covariates (multinomial logit):**
+
+$$
+\begin{aligned}
+\log\frac{p_{ij}(t)}{p_{i3}(t)} &=
+\beta_{0,ij}
++ \beta_{1,ij}\,\text{cos\_time}_t
++ \beta_{2,ij}\,\text{sin\_time}_t \\
+&\quad + \beta_{3,ij}\,\text{stand\_mean\_temp}_t
++ \beta_{4,ij}\,\text{cos\_time}_t \cdot \text{stand\_mean\_temp}_t
++ \beta_{5,ij}\,\text{sin\_time}_t \cdot \text{stand\_mean\_temp}_t
+\end{aligned}
+$$
+
+for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
