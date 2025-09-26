@@ -359,97 +359,74 @@ write_csv(HMM_out, "./data/final_model_output_data/HMM_final_output_TimeTempInt_
 
 ---
 
-### Build & Select HMMs
+### 4. Build & Select HMMs
 
-To identify activity states, we fitted Hidden Markov Models (HMMs) to the step length and turning angle time series using the **moveHMM** package (Michelot et al., 2016).  
-A three-state model was chosen as most ecologically appropriate (inactive, low active, high active), based on prior exploratory analysis and ecological reasoning (Copp et al., 2009).
+We fit a **3-state Hidden Markov Model (HMM)** with **gamma** step lengths and **von Mises** turning angles. Ecologically, the three states correspond to **Inactivity**, **Low activity**, and **High activity**. We included two covariates in the state process: **cyclic time of day** (encoded with sine/cosine) and **standardized epilimnion temperature**. We compared five candidate models (no covariates; temperature only; time of day only; additive time + temperature; interaction time × temperature) using **AIC** and **log-likelihood**. Multiple randomized initializations were used to encourage convergence to a global optimum.
 
-#### Covariates in the State Process
+#### Observation model
+Step length \(S_t\) and turning angle \(\Theta_t\) are conditionally independent given the hidden state \(Z_t \in \{1,2,3\}\):
 
-To evaluate the role of environmental drivers, two covariates were considered:
+- **Step lengths** (gamma, parameterized by mean \(\mu_k\) and SD \(\sigma_k\) for state \(k\)):
+  $$
+  S_t \mid Z_t=k \sim \text{Gamma}\big(\text{shape}_k=\mu_k^2/\sigma_k^2,\ \text{rate}_k=\mu_k/\sigma_k^2\big).
+  $$
 
-1. **Epilimnion temperature** (`stand_mean_temp`), standardized for numerical stability:
-   $$
-   \text{stand\_mean\_temp} = \frac{T - \bar{T}}{\sigma_T}
-   $$
-   where $T$ is the observed epilimnion temperature, $\bar{T}$ its mean, and $\sigma_T$ its standard deviation.
+- **Turning angles** (von Mises with mean direction \(\mu^\theta_k\) and concentration \(\kappa_k\)):
+  $$
+  \Theta_t \mid Z_t=k \sim \text{vM}(\mu^\theta_k,\ \kappa_k).
+  $$
 
-2. **Time of day (cyclic effect)**, included as trigonometric functions of time $t$ (in seconds since midnight), following Li et al.:
-   $$
-   \text{tod\_cos}(t) = \cos\left(\frac{2\pi t}{86400}\right), \quad 
-   \text{tod\_sin}(t) = \sin\left(\frac{2\pi t}{86400}\right)
-   $$
+#### Covariates in the state process
 
-These two terms capture the daily cycle of activity while avoiding discontinuity at midnight.
+- **Standardized epilimnion temperature**:
+  $$
+  \text{stand\_mean\_temp} \;=\; \frac{T - \bar{T}}{\sigma_T}\,,
+  $$
+  where \(T\) is the observed epilimnion temperature, \(\bar{T}\) its mean, and \(\sigma_T\) its standard deviation (standardization as recommended for numerical stability).
 
-#### Candidate Models
+- **Time of day (cyclic)** for time \(t\) (seconds since midnight):
+  $$
+  \text{tod\_cos}(t)=\cos\!\left(\frac{2\pi t}{86400}\right),\qquad
+  \text{tod\_sin}(t)=\sin\!\left(\frac{2\pi t}{86400}\right).
+  $$
+  We refer to the pair \(\text{tod\_trigo}(t) = \{\text{tod\_cos}(t), \text{tod\_sin}(t)\}\).
 
-We fitted and compared five models with different covariate structures in the state process:
-
-1. No covariates  
-2. Temperature only  
-3. Time of day only  
-4. Additive model: temperature + time of day  
-5. Interaction model: temperature × time of day  
-
-Formally, the state transition probability matrix $P$ was modeled as:
+#### Candidate state-process specifications
+We model the **transition probabilities** \(P(Z_t=j \mid Z_{t-1}=i, \mathbf{x}_t)\) via a multinomial logit (softmax) link:
 $$
-P_{ij}(t) = f\left(\beta_0 + \beta_1 \cdot \text{stand\_mean\_temp} + \beta_2 \cdot \text{tod\_cos}(t) + \beta_3 \cdot \text{tod\_sin}(t) + \beta_4 \cdot \text{stand\_mean\_temp} \times \text{tod}(t)\right)
+\log\frac{P(Z_t=j \mid Z_{t-1}=i,\mathbf{x}_t)}{P(Z_t=1 \mid Z_{t-1}=i,\mathbf{x}_t)}
+\;=\;
+\beta_{ij,0}
+\;+\; \beta_{ij,1}\,\text{stand\_mean\_temp}_t
+\;+\; \beta_{ij,2}\,\text{tod\_cos}(t)
+\;+\; \beta_{ij,3}\,\text{tod\_sin}(t)
+\;+\; \beta_{ij,4}\,\Big[\text{stand\_mean\_temp}_t \times \text{tod\_cos}(t)\Big]
+\;+\; \beta_{ij,5}\,\Big[\text{stand\_mean\_temp}_t \times \text{tod\_sin}(t)\Big],
 $$
-where $f$ is the multinomial logit link ensuring valid probabilities.
+with terms included according to the specific candidate model below:
 
-#### Model Selection
+1. **No covariates**  
+2. **Temperature only** \((\beta_{ij,1})\)  
+3. **Time only** \((\beta_{ij,2},\beta_{ij,3})\)  
+4. **Additive time + temperature** \((\beta_{ij,1},\beta_{ij,2},\beta_{ij,3})\)  
+5. **Interaction time × temperature** \((\beta_{ij,1},\beta_{ij,2},\beta_{ij,3},\beta_{ij,4},\beta_{ij,5})\)
 
-Model selection was based on **AIC** and log-likelihood.  
-The best-supported model included the **interaction between temperature and time of day** (Appendix I: Table A1.2).  
-
-#### State Decoding & Probabilities
-
-From the selected HMM, we extracted:
-
-- The most likely sequence of states using the **Viterbi algorithm** (`viterbi()` function; Zucchini et al., 2016).
-- State probabilities at each time step using `stateProbs()`.
-- Stationary probabilities across a 24-hour cycle under three scenarios (low, mean, high epilimnion temperature) using `stationary()`.
-
-After filtering, the final dataset contained **13 individuals** with **85,650 locations**.
-
-```r
-# Example: fitting the final HMM with interaction
-m_inter <- moveHMM::fitHMM(
-  data = catfish_data,
-  nbStates = 3,
-  dist = list(step = "gamma", angle = "vm"),
-  formula = ~ stand_mean_temp * tod_trigo
-)
-
-# Decode most likely states
-viterbi_states <- viterbi(m_inter)
-
-# Extract state probabilities
-probs <- stateProbs(m_inter)
-
-### 5. Decode States & Predict Stationary Probabilities
-
-- Label states by movement characteristics:  
-  - State 1: **Inactivity** (short steps, large turning angles)  
-  - State 2: **High activity** (long steps, small turning angles)  
-  - State 3: **Low activity** (medium steps, small turning angles)
-
-- Predict stationary state probabilities across 24 h at low/mean/high epilimnion temperature scenarios.
-
-**(excerpt from `scripts/HMM_wels_FINAL_copy.R`, visualization)**  
-```r
-# Build step length & turning angle distributions (Gamma, von Mises), and plot histograms + fits
-# ... (plots created as in your script)
-
-# Stationary state probabilities under low / mean / high epilimnion temperatures
-# covariate frames (cos_time, sin_time, stand_mean_temp) created and fed into stationary()
-# ... (gg_lowT2, gg_avgT2, gg_highT2; combined via ggarrange)
-```
-
-[Back to top](#table-of-contents)
+**Model selection** used AIC/log-likelihood. The **interaction model** (time × temperature) provided the best support (Appendix I: Table A1.2). We decoded the most likely state sequence via the **Viterbi algorithm** and computed state probabilities and **stationary probabilities** (over a 24-h cycle) under **low/mean/high** temperature scenarios.
 
 ---
+
+**`scripts/hmm_function.R`** (randomized starting values; 3-state)
+```r
+# Create randomized starting values for 3-state HMM (niter tries)
+niter <- 5
+allPar0_3s <- lapply(as.list(1:niter), function(x) {
+  stepMean0 <- runif(3, min=c(3,25,55), max=c(50,75,100))
+  stepSD0   <- runif(3, min=c(3,25,55), max=c(50,75,100))
+  angleMean0 <- c(0, pi, pi/2)
+  angleCon0  <- runif(3, min=c(1,2,4), max=c(3,5,6))
+  list(step = c(stepMean0, stepSD0),
+       angle = c(angleMean0, angleCon0))
+})
 
 ### 6. Habitat Modeling (CLMMs)
 
