@@ -38,20 +38,3 @@ $$
 $$
 
 for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
-
-
-**State process with covariates (multinomial logit):**
-
-$$
-\begin{aligned}
-\log\frac{p_{ij}(t)}{p_{i3}(t)} &=
-\beta_{0,ij}
-+ \beta_{1,ij}\,\text{cos\_time}_t
-+ \beta_{2,ij}\,\text{sin\_time}_t \\
-&\quad + \beta_{3,ij}\,\text{stand\_mean\_temp}_t
-+ \beta_{4,ij}\,\text{cos\_time}_t \cdot \text{stand\_mean\_temp}_t
-+ \beta_{5,ij}\,\text{sin\_time}_t \cdot \text{stand\_mean\_temp}_t
-\end{aligned}
-$$
-
-for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
