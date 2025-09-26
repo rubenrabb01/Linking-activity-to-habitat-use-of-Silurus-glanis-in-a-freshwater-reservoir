@@ -359,6 +359,75 @@ write_csv(HMM_out, "./data/final_model_output_data/HMM_final_output_TimeTempInt_
 
 ---
 
+### Build & Select HMMs
+
+To identify activity states, we fitted Hidden Markov Models (HMMs) to the step length and turning angle time series using the **moveHMM** package (Michelot et al., 2016).  
+A three-state model was chosen as most ecologically appropriate (inactive, low active, high active), based on prior exploratory analysis and ecological reasoning (Copp et al., 2009).
+
+#### Covariates in the State Process
+
+To evaluate the role of environmental drivers, two covariates were considered:
+
+1. **Epilimnion temperature** (`stand_mean_temp`), standardized for numerical stability:
+   $$
+   \text{stand\_mean\_temp} = \frac{T - \bar{T}}{\sigma_T}
+   $$
+   where $T$ is the observed epilimnion temperature, $\bar{T}$ its mean, and $\sigma_T$ its standard deviation.
+
+2. **Time of day (cyclic effect)**, included as trigonometric functions of time $t$ (in seconds since midnight), following Li et al.:
+   $$
+   \text{tod\_cos}(t) = \cos\left(\frac{2\pi t}{86400}\right), \quad 
+   \text{tod\_sin}(t) = \sin\left(\frac{2\pi t}{86400}\right)
+   $$
+
+These two terms capture the daily cycle of activity while avoiding discontinuity at midnight.
+
+#### Candidate Models
+
+We fitted and compared five models with different covariate structures in the state process:
+
+1. No covariates  
+2. Temperature only  
+3. Time of day only  
+4. Additive model: temperature + time of day  
+5. Interaction model: temperature × time of day  
+
+Formally, the state transition probability matrix $P$ was modeled as:
+$$
+P_{ij}(t) = f\left(\beta_0 + \beta_1 \cdot \text{stand\_mean\_temp} + \beta_2 \cdot \text{tod\_cos}(t) + \beta_3 \cdot \text{tod\_sin}(t) + \beta_4 \cdot \text{stand\_mean\_temp} \times \text{tod}(t)\right)
+$$
+where $f$ is the multinomial logit link ensuring valid probabilities.
+
+#### Model Selection
+
+Model selection was based on **AIC** and log-likelihood.  
+The best-supported model included the **interaction between temperature and time of day** (Appendix I: Table A1.2).  
+
+#### State Decoding & Probabilities
+
+From the selected HMM, we extracted:
+
+- The most likely sequence of states using the **Viterbi algorithm** (`viterbi()` function; Zucchini et al., 2016).
+- State probabilities at each time step using `stateProbs()`.
+- Stationary probabilities across a 24-hour cycle under three scenarios (low, mean, high epilimnion temperature) using `stationary()`.
+
+After filtering, the final dataset contained **13 individuals** with **85,650 locations**.
+
+```r
+# Example: fitting the final HMM with interaction
+m_inter <- moveHMM::fitHMM(
+  data = catfish_data,
+  nbStates = 3,
+  dist = list(step = "gamma", angle = "vm"),
+  formula = ~ stand_mean_temp * tod_trigo
+)
+
+# Decode most likely states
+viterbi_states <- viterbi(m_inter)
+
+# Extract state probabilities
+probs <- stateProbs(m_inter)
+
 ### 5. Decode States & Predict Stationary Probabilities
 
 - Label states by movement characteristics:  
