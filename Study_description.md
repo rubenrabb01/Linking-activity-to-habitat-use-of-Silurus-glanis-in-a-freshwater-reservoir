@@ -341,14 +341,20 @@ stand\_mean\_temp = \frac{temp\_mean - \mu}{\sigma}
 $$
 
 where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion temperatures.
-- **State process with covariates** (multinomial logit for transition probabilities \(p_{ij}(t)\)):  
-  \[
-  \log\frac{p_{ij}(t)}{p_{i3}(t)} = \beta_{0,ij} + \beta_{1,ij}\,\mathrm{cos\_time}_t + \beta_{2,ij}\,\mathrm{sin\_time}_t
-  + \beta_{3,ij}\,\texttt{stand\_mean\_temp}_t
-  + \beta_{4,ij}\,\mathrm{cos\_time}_t\!\cdot\!\texttt{stand\_mean\_temp}_t
-  + \beta_{5,ij}\,\mathrm{sin\_time}_t\!\cdot\!\texttt{stand\_mean\_temp}_t,
-  \]
-  for \(j=1,2\) (baseline \(j=3\)). Reduced models drop terms accordingly.
+
+- **State process with covariates (multinomial logit):**
+
+$$
+\begin{aligned}
+\log\frac{p_{ij}(t)}{p_{i3}(t)} = {} & \beta_{0,ij} \\
+ &+ \beta_{1,ij}\cos\_time_t \\
+ &+ \beta_{2,ij}\sin\_time_t \\
+ &+ \beta_{3,ij}stand\_mean\_temp_t \\
+ &+ \beta_{4,ij}\cos\_time_t \cdot stand\_mean\_temp_t \\
+ &+ \beta_{5,ij}\sin\_time_t \cdot stand\_mean\_temp_t
+\end{aligned}
+$$
+
 
 - **Candidate sets compared** (moveHMM):  
   1) no covariates; 2) temperature only; 3) time only; 4) additive (time + temp); 5) interaction (time * temp).  
