@@ -327,20 +327,20 @@ $$
 \Theta_t \mid S_t=s \sim \mathrm{von\ Mises}(\mu_s,\ \kappa_s)
 $$
 
-- **Time-of-day cyclic covariates** (seconds since midnight \(t\)):  
+- **Time-of-day cyclic covariates (seconds since midnight \(t\)):**
+
+$$
+\cos\_time_t = \cos\!\left(\frac{2\pi t}{86400}\right), \quad
+\sin\_time_t = \sin\!\left(\frac{2\pi t}{86400}\right)
+$$
+
+- **Temperature standardization (for numerical stability):**
 
 $$
 stand\_mean\_temp = \frac{temp\_mean - \mu}{\sigma}
 $$
 
 where \(\mu\) and \(\sigma\) are the mean and standard deviation of epilimnion temperatures.
-
-- **Temperature standardization** (for numerical stability):  
-  \[
-  \texttt{stand\_mean\_temp} = \frac{\texttt{temp\_mean} - \mu}{\sigma},
-  \]
-  where \(\mu\) and \(\sigma\) are the mean and SD of the merged epilimnion temperatures.
-
 - **State process with covariates** (multinomial logit for transition probabilities \(p_{ij}(t)\)):  
   \[
   \log\frac{p_{ij}(t)}{p_{i3}(t)} = \beta_{0,ij} + \beta_{1,ij}\,\mathrm{cos\_time}_t + \beta_{2,ij}\,\mathrm{sin\_time}_t
