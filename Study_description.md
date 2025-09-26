@@ -545,7 +545,7 @@ CLMMs indicated activity increased offshore and in deeper habitats, with diel pe
 
 ## Figures
 
-> All images should be placed in your repo at `figures/`. If your filenames differ, update the links below.
+> All images are  placed in folder `figures/`.
 
 **Figure 1. Receiver array and bathymetry.**  
 *Placement of telemetry receivers in Římov Reservoir, Czech Republic. Blue shading shows bathymetry. Adapted from Říha et al. 2025a.*  
@@ -588,7 +588,7 @@ CLMMs indicated activity increased offshore and in deeper habitats, with diel pe
 
 ## Tables
 
-> Where provided as images, we link them; where data were provided, we render Markdown tables.
+> Tablas are shown as images or rendered as Markdown tables.
 
 **Table 1.** *(as image)*  
 ![Table 1](figures/Table_1.png)
