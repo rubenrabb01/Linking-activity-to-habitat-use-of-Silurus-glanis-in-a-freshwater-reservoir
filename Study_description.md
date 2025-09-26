@@ -1,115 +1,232 @@
 # Linking activity to habitat use of *Silurus glanis* in a freshwater reservoir
 
-## Table of Contents
-1. [Methods](#methods)
-   - [Study area](#study-area)
-   - [Data collection](#data-collection)
-   - [Statistical analysis](#statistical-analysis)
-2. [Results](#results)
-   - [Activity states](#activity-states)
-   - [Time allocation and spatial distribution](#time-allocation-and-spatial-distribution)
-   - [Influence of temperature and time of day](#influence-of-temperature-and-time-of-day)
-   - [Habitat use and diel period](#habitat-use-and-diel-period)
-   - [Three-dimensional habitat use](#three-dimensional-habitat-use)
-3. [Figures](#figures)
-4. [Tables](#tables)
+![Graphical Abstract](figures/Graphical_Abstract.png)  
+**Graphical Abstract.** Conceptual depiction of step length (m) and turning angle (radians) distributions for a three-state Hidden Markov Model (inactive, low, high activity). Adapted from Rabaneda-Bueno, unpublished.
 
 ---
 
 ## Methods
 
 ### Study area
-Rimov Reservoir is a canyon-shaped reservoir in South Bohemia, Czech Republic (N 48°51.00978′, E 14°29.47462′), built in 1978 for drinking water storage and flood control. The main reservoir body extends 10 km, covers 210 ha, and reaches 45 m maximum depth (Figure 1). It exhibits mesotrophic–eutrophic gradients (Šeda & Devetter, 2000), strong summer stratification (Říha et al. 2022), and fluctuating water levels that prevent macrophyte growth in the littoral zone (Říha et al. 2015).  
-The reservoir hosts ~200 catfish with limited human disturbance, making it an ideal lentic system to study predator activity.  
-During the study, epilimnion temperature ranged 19.7–22.7 °C (mean 21.0 ± 0.6 °C; Figure S1).
+Římov Reservoir (South Bohemia, Czech Republic; 48°51.00978′ N, 14°29.47462′ E) is a canyon-shaped reservoir built in 1978 for drinking water storage and flood control. It extends ~10 km, covers 210 ha, and reaches 45 m maximum depth (Figure 1). The system shows mesotrophic–eutrophic gradients (Šeda & Devetter 2000), strong summer stratification (Říha et al. 2022), and fluctuating water levels that prevent littoral macrophyte growth (Říha et al. 2015).  
+The estimated catfish population (~200 individuals) and restricted human access make this an ideal system for studying natural predator behaviour.  
+
+During the study (July–August 2017), epilimnion temperature ranged between 19.7–22.7 °C (mean: 21.0 ± 0.6 °C). Thermocline depth averaged 5.5 m.
+
+![Figure 1](figures/Figure%201.png)  
+**Figure 1.** Placement of telemetry receivers in Římov Reservoir, Czech Republic. Blue shading represents bathymetry. Adapted from Říha et al. 2025a.
+
+---
 
 ### Data collection
-An array of 91 Lotek WHS3250 receivers was deployed on 18 April 2017 across the reservoir, tributary, and bay (Figure 1). Temperature was monitored with HOBO loggers at 1-m intervals (0–13 m plus 20 m).  
-Fifteen *S. glanis* were captured, anaesthetized (2-phenoxy-ethanol, 0.7 ml l−1), tagged with Lotek MM-M-11-28-TP transmitters, and released between 18–25 April 2017. After filtering, 13 individuals were retained for analysis.
+- **Telemetry array:** 91 Lotek WHS3250 receivers covering reservoir, tributary, and bay.  
+- **Temperature:** HOBO loggers deployed every 1 m (0–13 m, plus 20 m) at four sites.  
+- **Fish capture & tagging:** 15 *S. glanis* captured by long-lining, anaesthetized (2-phenoxy-ethanol, 0.7 ml l−1), and tagged with Lotek MM-M-11-28-TP transmitters (13 g, burst rate 15 s).  
+- **Final dataset:** 13 individuals retained after filtering.
 
-### Statistical analysis
+---
 
-#### Data processing
-- Positions calculated with Lotek UMAP v1.4.3, averaged to 5-min intervals.  
-- Period selected: 1 July–31 August 2017 (summer peak).  
-- Habitat variables: fish depth, distance to shore (via `rgeos`), reservoir depth (1 × 1 m bathymetry), distance to bottom.  
-- Missing values interpolated if <1.5 h gaps; otherwise excluded.  
+### Data processing
+Positions estimated with Lotek UMAP v1.4.3, filtered, and averaged at 5-min intervals.  
+Habitat covariates calculated:  
 
-#### Identifying activity states
-- HMM fitted with `moveHMM` (Michelot et al. 2016).  
-- Step length = distance between consecutive locations.  
-- Turning angle = directional change between steps.  
-- Missing data interpolated with CTCRW (`momentuHMM::crawlWrap`) for gaps ≤1.5 h.  
-- Three states (inactive, low, high activity) chosen as ecologically appropriate.  
-- Covariates: epilimnion temperature (standardized) + time of day (sin/cos).  
-- Five candidate models compared (no covariates, temp, time, additive, interaction).  
-- Best model: interaction between cyclic time and temperature (AIC).  
-- Most likely sequence estimated with `viterbi()`.  
+```r
+# Example processing code
+library(rgeos)
+# Distance to shore
+positions$dist_shore <- gDistance(positions, reservoir_shoreline, byid = TRUE)
 
-#### Mapping activity states to home range
-- Kernel UD (95% contours) via `adehabitat` (Calenge 2006).  
-- Overlap and areas calculated, compared with ANOVA.  
+# Distance to reservoir bottom
+positions$dist_bottom <- positions$res_depth - positions$fish_depth
+```
 
-#### Predicting habitat use
-- CLMM (`ordinal`) with activity state as ordered response (inactive < low < high).  
-- Fish ID random intercept.  
-- Separate models for each habitat variable (distance to shore, depth, distance to bottom, absolute fish depth).  
-- Diel period treated as effect modifier.  
+- Missing values linearly interpolated for ≤1.5 h gaps.  
+- Analysis period: July–August (peak activity, excluding spawning).  
+
+---
+
+### Hidden Markov Models (HMMs)
+To classify activity states from step lengths and turning angles, we fitted HMMs using `moveHMM`. Missing data were interpolated using CTCRW with `momentuHMM::crawlWrap()`.
+
+```r
+library(moveHMM)
+library(momentuHMM)
+
+# Prepare track with CTCRW interpolation
+interp_track <- crawlWrap(data, theta = c(log(10), log(1)))
+
+# Define HMM distributions
+step_dist <- "gamma"
+angle_dist <- "vm"
+
+# Fit 3-state HMM with covariates
+hmm_model <- fitHMM(interp_track,
+                    nbStates = 3,
+                    dist = list(step = step_dist, angle = angle_dist),
+                    formula = ~ cos_time + sin_time * stand_mean_temp)
+```
+
+- Candidate models:  
+  1. Null  
+  2. Temperature only  
+  3. Time of day only  
+  4. Additive (temp + time)  
+  5. Interaction (temp × time)  
+
+- Best model selected by AIC = interaction.  
+- Most likely state sequences estimated with `viterbi()`.  
+
+---
+
+### Cumulative Link Mixed Models (CLMMs)
+To link decoded HMM states (inactive < low < high) to habitat covariates, we fitted CLMMs with `ordinal`. Fish ID included as a random intercept.
+
+```r
+library(ordinal)
+
+clmm1 <- clmm(state ~ scale(dist_shore) * diel + (1|fish_id), data = df)
+clmm2 <- clmm(state ~ scale(botdepth) * diel + (1|fish_id), data = df)
+clmm3 <- clmm(state ~ scale(dist_bottom) * diel + (1|fish_id), data = df)
+clmm4 <- clmm(state ~ scale(fish_depth) * diel + (1|fish_id), data = df)
+```
+
+- Separate CLMMs for each habitat covariate.  
+- Diel period (day/night) as effect modifier.  
 - Model selection by AIC.  
 
-#### Diel differences in habitat use
-- Kernel isopleths (50% = core, 95% = home range) via `rKin`.  
-- Polygons compared by diel period and plotted with depth profiles.  
+---
+
+### Three-dimensional habitat use
+We estimated 50% (core) and 95% (home range) kernel utilization distributions (KUDs) per state × diel period using the `rKIN` package.
+
+```r
+library(rKIN)
+
+kud50 <- kernelUD(track, h = "href", grid = 100)
+kud95 <- kernelUD(track, h = "href", grid = 100, percent = 95)
+```
+
+- Overlaps calculated between states (day vs night).  
+- Results plotted as depth–bottom cross-sections.
 
 ---
 
 ## Results
 
 ### Activity states
-Three states identified:  
-- **High activity**: long steps (72.1 ± 29.5 m), small angles (κ = 1.7).  
-- **Low activity**: medium steps (21.3 ± 15.3 m), small angles (κ = 0.6).  
-- **Inactive**: short steps (2.4 ± 2.2 m), large angles (κ = 0.2).  
+Three distinct activity states:  
+- **Inactive:** short steps (2.4 ± 2.2 m), wide turning angles.  
+- **Low activity:** medium steps (21.3 ± 15.3 m).  
+- **High activity:** long steps (72.1 ± 29.5 m), directed movement.  
 
-Areas differed significantly (p < 0.001): inactive = 8.0 ha, low = 37.8 ha, high = 74.5 ha. High activity overlapped lower states (Table 1).
+![Figure 5](figures/Figure%205.png)  
+**Figure 5.** Final HMM model: (a) step length and (b) turning angle distributions per state.
 
-### Time allocation and spatial distribution
-Most individuals spent 30–48% of time inactive (Figure 5), often clustered in concentrated reservoir areas, but locations varied among fish.
+---
 
-### Influence of temperature and time of day
-At mean temp (21 °C):  
-- High activity peaked sunset–night (16:30–01:30).  
-- Inactivity dominated daytime (02:00–15:30).  
-- Low activity dominated transitions.  
-At high temp (22.7 °C): activity extended later into night.  
-At low temp (19.7 °C): transitions earlier, more low activity during day (Figure 6).  
+### Habitat use and overlap
+State home range areas increased with activity (inactive = 8.0 ha; low = 37.8 ha; high = 74.5 ha).  
 
-### Habitat use and diel period
-- All CLMMs: diel period strong predictor (p < 0.001).  
-- Distance to shore, bottom depth, and distance from bottom strongly increased activity (OR ~5–6, all p < 0.001).  
-- Effects weaker at night.  
-- Absolute fish depth weakest predictor (lowest AIC).  
+![Figure 7](figures/Figure%207.png)  
+**Figure 7.** Horizontal area used per state (N = 13). * indicates significant differences (ANOVA, p < 0.001).
+
+---
+
+### Time allocation
+Most individuals spent 30–48% of time inactive, concentrated in few areas.  
+
+![Figure 9](figures/Figure%209.png)  
+**Figure 9.** Proportion of detections per state for each fish. Totals per individual shown above bars.
+
+---
+
+### Temperature and diel effects
+At mean temp (21 °C): inactivity dominated day, activity peaked at night. Warmer conditions extended nocturnal activity; cooler advanced transitions.  
+
+![Figure 11](figures/Figure%2011.png)  
+**Figure 11.** State probabilities across diel cycle at low (19.7 °C), mean (21 °C), and high (22.7 °C) epilimnion temperatures. Grey = twilight; light grey = sunrise/sunset.
+
+---
+
+### Habitat CLMM results
+Activity increased with distance from shore, bottom depth, and distance to bottom, but effects weakened at night. Absolute fish depth had weaker effects.
+
+![Figure 12](figures/Figure%2012.png)  
+**Figure 12.** Predicted state probabilities by habitat covariates: (a) distance to shore, (b) bottom depth, (c) distance to bottom, (d) fish depth. Solid = day, dashed = night.
+
+**Table 3. CLMM results (distance to shore example).**
+
+| Response | Predictors                        | Odds Ratio | 95% CI       | p-value |
+|----------|-----------------------------------|------------|--------------|---------|
+| Activity (Inactive \| Low Active) | dist_shore_scaled              | 0.86       | 0.63–1.18 | 0.348   |
+| Activity (Low Active \| High Active) | diel period [night]            | 7.89       | 5.77–10.77| <0.001  |
+| …        | …                                 | …          | …            | …       |
+
+*(full model outputs in Appendix)*
+
+---
 
 ### Three-dimensional habitat use
-Day: inactivity nearshore/shallow, high activity spanning deep zones, low activity intermediate (Figure 8, Table 4).  
-Night: all states shifted shallower; overlaps increased.  
+- Day: inactivity nearshore/shallow, high activity spanned deep zones.  
+- Night: states shifted shallower, overlaps increased.  
+
+![Figure 13](figures/Figure%2013.png)  
+**Figure 13.** Spatial overlay of 50% (core) and 95% (home range) kernel distributions by diel period. Dashed line = thermocline; shaded area = reservoir bottom.
+
+**Table 4. Maximum spatial extent per state × diel period.**
+
+| State        | CI  | Diel | Max Fish Depth (m) | Max Reservoir Depth (m) |
+|--------------|-----|------|---------------------|--------------------------|
+| Inactivity   | 50  | Day  | 4.05 | 5.92 |
+| Inactivity   | 50  | Night| 3.64 | 4.20 |
+| Low Activity | 95  | Day  | 15.08| 36.30|
+| High Activity| 95  | Night| 7.51 | 36.42|
+
+**Table 5. Percent overlap of 3D areas (day vs night).**
+
+| Ref. State | Overlap State | Day Core (%) | Night Core (%) |
+|------------|---------------|--------------|----------------|
+| Inactivity | High Activity | 50.9 | 58.3 |
+| Inactivity | Low Activity  | 100  | 83.2 |
+| Low Activity| High Activity| 46.0 | 40.8 |
 
 ---
 
-## Figures
-- **Figure 1**: Map of Rimov reservoir and receiver array  
-- **Figure 2**: Example HMM state classification  
-- **Figure 3**: Step length and turning angle distributions per state  
-- **Figure 4**: State home range areas (boxplot)  
-- **Figure 5**: Time allocation per individual  
-- **Figure 6**: Predicted state probabilities vs diel cycle × temperature  
-- **Figure 7**: Habitat CLMM effects  
-- **Figure 8**: Day/night 3D core areas and home ranges  
+## Discussion
+- Catfish displayed three consistent activity states, with inactivity dominating daytime and high activity at night.  
+- Temperature modified diel cycles, extending or advancing activity transitions.  
+- Habitat strongly structured behaviour: nearshore/littoral zones linked with inactivity, deeper pelagic zones with activity.  
+- Spatial overlap between states suggests flexible use of reservoir habitats, with management implications for predator–prey interactions in lentic systems.  
 
 ---
 
-## Tables
-- **Table 1**: Area and overlap of activity states  
+## Appendix
+
+![Figure A1.1](figures/Figure%20A1.1.png)  
+**Figure A1.1.** Hourly mean epilimnion temperature. Red dashed line = global average.
+
+![Figure A1.2](figures/Figure%20A1.2.png)  
+**Figure A1.2.** Diurnal change in epilimnion temperature. Dark grey = twilight; light grey = sunrise/sunset.
+
+---
+
+**Table A1.1. Initial HMM parameters**
+
+| Parameter | State 1 | State 2 | State 3 |
+|-----------|---------|---------|---------|
+| Step Mean | 3       | 25      | 75      |
+| Step SD   | 3       | 25      | 75      |
+| Turning Angle Mean | π | 0 | π/2 |
+
+**Table A1.2. HMM model selection (AIC).**
+
+| Model                        | AIC     | LogLik   |
+|-------------------------------|---------|----------|
+| No covariates                 | 916760  | -458459  |
+| Cos+Sin*time × temp (best)    | 915517  | -457709  |
+
+---
+
 - **Table 2**: CLMM coefficients for habitat × diel period  
 - **Table 3**: Summary of overlap metrics  
 - **Table 4**: Depth characteristics of 3D habitat use  
